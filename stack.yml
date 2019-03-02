@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+        gluster:
+                image: "snafoo972/docker-glusterfs-custom:latest"
+                privileged: true
+                networks:
+                        - host
+                #enviroment:
+                # - SERVICE_NAME=gluster
+                # - SSH_USER=root
+                # - SSH_PASSWORD=gluster
+                # - SSH_PORT=2222
+                # - GLUSTER_VOL=alpha
+                # - GLUSTER_BRICK_PATH=/data
+                # - DEBUG=0
+                #dns:
+                #        - 192.168.1.10
+                #        - 192.168.1.11
+                #        - 192.168.1.12
+                #        - 192.168.1.13
+                volumes:
+                        - type: bind
+                          source: /data/glusterfs/alpha/brick1
+                          target: /data
+                deploy:
+                        mode: global
+                        placement:
+                                constraints: [node.labels.brick == true]
+
+networks:
+        host:
+                external: true
